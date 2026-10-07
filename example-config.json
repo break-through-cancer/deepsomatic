@@ -1,0 +1,23 @@
+{
+  "deepsomatic_runs": [
+    {
+      "sample_name": "GBM1.DFCI4.S1.C4",
+      "tumor_bam": "s3://your-bucket/GBM1.DFCI4.S1.C4.recal.bam",
+      "tumor_bam_index": "s3://your-bucket/GBM1.DFCI4.S1.C4.recal.bam.bai",
+      "normal_bam": "s3://your-bucket/GBM1.DFCI4.PBMC.recal.bam",
+      "normal_bam_index": "s3://your-bucket/GBM1.DFCI4.PBMC.recal.bam.bai"
+    },
+    {
+      "sample_name": "GBM1.DFCI4.S2.C4",
+      "tumor_bam": "s3://your-bucket/GBM1.DFCI4.S2.C4.recal.bam",
+      "tumor_bam_index": "s3://your-bucket/GBM1.DFCI4.S2.C4.recal.bam.bai",
+      "normal_bam": "s3://your-bucket/GBM1.DFCI4.PBMC.recal.bam",
+      "normal_bam_index": "s3://your-bucket/GBM1.DFCI4.PBMC.recal.bam.bai"
+    }
+  ],
+  "ref_fasta": "s3://broad-references/hg38/v0/Homo_sapiens_assembly38.fasta",
+  "ref_fai": "s3://broad-references/hg38/v0/Homo_sapiens_assembly38.fasta.fai",
+  "num_streams_per_gpu": 3,
+  "enable_gvcf": false,
+  "outdir": "s3://your-bucket/deepsomatic-results"
+}

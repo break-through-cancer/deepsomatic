@@ -1,0 +1,43 @@
+{
+  "form": {
+    "title": "DeepSomatic",
+    "description": "GPU-accelerated somatic variant calling using NVIDIA Parabricks DeepSomatic",
+    "type": "object",
+    "properties": {
+      "ref_fasta": {
+        "title": "Reference FASTA",
+        "description": "Reference genome FASTA used by DeepSomatic",
+        "type": "string",
+        "multiple": false,
+        "pathType": "reference",
+        "file": "**/*",
+        "default": "s3://broad-references/hg38/v0/Homo_sapiens_assembly38.fasta"
+      },
+      "ref_fai": {
+        "title": "Reference FASTA index",
+        "description": "FAI index corresponding to the reference FASTA",
+        "type": "string",
+        "multiple": false,
+        "pathType": "reference",
+        "file": "**/*",
+        "default": "s3://broad-references/hg38/v0/Homo_sapiens_assembly38.fasta.fai"
+      },
+      "num_streams_per_gpu": {
+        "title": "Streams per GPU",
+        "description": "Number of streams to process per GPU (1-6). Higher values improve throughput but use more memory. Recommended: 3-4",
+        "type": "integer",
+        "default": 3,
+        "minimum": 1,
+        "maximum": 6
+      },
+      "enable_gvcf": {
+        "title": "Output gVCF",
+        "description": "Generate gVCF output in addition to VCF",
+        "type": "boolean",
+        "default": false
+      }
+    },
+    "required": ["ref_fasta", "ref_fai"]
+  },
+  "ui": {}
+}
