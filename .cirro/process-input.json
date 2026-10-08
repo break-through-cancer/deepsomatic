@@ -1,55 +1,7 @@
 {
-  "form": {
-    "title": "Input Samples",
-    "type": "object",
-    "properties": {
-      "samples": {
-        "title": "Tumor-Normal Sample Pairs",
-        "description": "Select tumor and normal BAM files for each sample",
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "sample_name": {
-              "title": "Sample Name",
-              "description": "Unique identifier for this tumor-normal pair",
-              "type": "string"
-            },
-            "tumor_bam": {
-              "title": "Tumor BAM",
-              "description": "Tumor sample BAM file (must be BQSR-recalibrated)",
-              "type": "string",
-              "pathType": "input",
-              "file": "*.bam"
-            },
-            "tumor_bam_index": {
-              "title": "Tumor BAM Index",
-              "description": "Index file for tumor BAM (.bai)",
-              "type": "string",
-              "pathType": "input",
-              "file": "*.bai"
-            },
-            "normal_bam": {
-              "title": "Normal BAM",
-              "description": "Normal sample BAM file (must be BQSR-recalibrated)",
-              "type": "string",
-              "pathType": "input",
-              "file": "*.bam"
-            },
-            "normal_bam_index": {
-              "title": "Normal BAM Index",
-              "description": "Index file for normal BAM (.bai)",
-              "type": "string",
-              "pathType": "input",
-              "file": "*.bai"
-            }
-          },
-          "required": ["sample_name", "tumor_bam", "tumor_bam_index", "normal_bam", "normal_bam_index"]
-        },
-        "minItems": 1
-      }
-    },
-    "required": ["samples"]
-  },
-  "ui": {}
+  "deepsomatic_runs": "$.form.samples",
+  "ref_fasta": "$.form.ref_fasta",
+  "ref_fai": "$.form.ref_fai",
+  "num_streams_per_gpu": "$.form.num_streams_per_gpu",
+  "enable_gvcf": "$.form.enable_gvcf"
 }
