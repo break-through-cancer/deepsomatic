@@ -1,7 +1,7 @@
 {
-  "deepsomatic_runs": "$.form.samples",
-  "ref_fasta": "$.form.ref_fasta",
-  "ref_fai": "$.form.ref_fai",
-  "num_streams_per_gpu": "$.form.num_streams_per_gpu",
-  "enable_gvcf": "$.form.enable_gvcf"
+  "deepsomatic_runs": "$.dataset.params.deepsomatic_runs",
+  "ref_fasta": "s3://broad-references/hg38/v0/Homo_sapiens_assembly38.fasta",
+  "ref_fai": "s3://broad-references/hg38/v0/Homo_sapiens_assembly38.fasta.fai",
+  "num_streams_per_gpu": "$.dataset.params.num_streams_per_gpu",
+  "enable_gvcf": "$.dataset.params.enable_gvcf"
 }
