@@ -50,10 +50,10 @@ process DEEPSOMATIC {
 
     # Run DeepSomatic
     parabricks deepsomatic \
-        --tumor-bam !{tumor_bam} \
-        --normal-bam !{normal_bam} \
+        --in-tumor-bam !{tumor_bam} \
+        --in-normal-bam !{normal_bam} \
         --ref !{ref_fasta} \
-        --output-vcf !{sampleName}.vcf.gz \
+        --out-variants !{sampleName}.vcf.gz \
         --num-streams-per-gpu !{params.num_streams_per_gpu} \
         !{params.enable_gvcf ? '--run-deepsomatic-gvcf' : ''} \
         > !{sampleName}.log 2>&1
