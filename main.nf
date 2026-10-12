@@ -30,7 +30,7 @@ if (!params.containsKey('enable_gvcf'))         params.enable_gvcf = false
 process DEEPSOMATIC {
     tag "${sampleName}"
     label 'process_high'
-    container "nvcr.io/nvidia/clara/clara-parabricks:4.6.0"
+    container "nvcr.io/nvidia/clara/clara-parabricks:4.6.0-1"
     publishDir "${params.outdir}/${sampleName}", mode: 'copy'
     errorStrategy 'retry'
     maxRetries 2
