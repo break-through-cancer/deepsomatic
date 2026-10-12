@@ -3,8 +3,9 @@ preprocess.py -- Cirro dataset preprocessing hook for DeepSomatic pipeline.
 Runs on the Cirro platform BEFORE Nextflow starts, inspects the dataset's
 file manifest, and injects `deepsomatic_runs` into params.
 
-Shared-normal model: every tumor BAM found in the dataset is paired with
-the SAME single normal BAM -- exactly one germline/normal sample per dataset.
+Shared-normal model: every tumor alignment found in the dataset is paired with
+the SAME single normal alignment -- exactly one germline/normal sample per dataset.
+Each sample's alignment can be a BAM (+ .bai) or a CRAM (+ .crai); either works.
 
 Classification heuristic: any sample whose name contains "PBMC" is treated
 as the normal; everything else is treated as a tumor. Adjust NORMAL_NAME_MARKERS

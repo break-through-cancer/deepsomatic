@@ -5,12 +5,12 @@ GPU-accelerated somatic variant calling using NVIDIA Parabricks DeepSomatic.
 ## Requirements
 
 - **GPU**: Minimum 40GB VRAM (H100, A100, A10, or T4)
-- **Input**: Paired tumor-normal BAMs (preprocessed with BQSR applied)
+- **Input**: Paired tumor-normal BAMs or CRAMs (preprocessed with BQSR applied)
 - **Output**: VCF files with somatic variant calls
 
 ## Input Format
 
-Provide tumor-normal BAM pairs via JSON config:
+Provide tumor-normal BAM (or CRAM, with `.crai` index) pairs via JSON config. The `*_bam` parameter names are used for both formats:
 
 ```json
 {
