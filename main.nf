@@ -49,7 +49,7 @@ process DEEPSOMATIC {
     set -euxo pipefail
 
     # Run DeepSomatic
-    parabricks deepsomatic \
+    pbrun deepsomatic \
         --in-tumor-bam !{tumor_bam} \
         --in-normal-bam !{normal_bam} \
         --ref !{ref_fasta} \
