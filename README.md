@@ -30,7 +30,7 @@ Provide tumor-normal BAM (or CRAM, with `.crai` index) pairs via JSON config. Th
 
 ## Parameters
 
-- `num_streams_per_gpu`: Number of parallel streams per GPU (1-6). Default: 3
+- `num_streams_per_gpu`: Number of parallel streams per GPU (1-6). Default: 1 (higher values are faster but use more host memory)
 - `enable_gvcf`: Generate gVCF output. Default: false
 
 ## Cost Estimation

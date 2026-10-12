@@ -20,7 +20,7 @@ if (!params.containsKey('ref_fai'))             params.ref_fai = null
 if (!params.containsKey('deepsomatic_runs'))    params.deepsomatic_runs = null
 
 // DeepSomatic-specific options
-if (!params.containsKey('num_streams_per_gpu')) params.num_streams_per_gpu = 3
+if (!params.containsKey('num_streams_per_gpu')) params.num_streams_per_gpu = 1
 if (!params.containsKey('enable_gvcf'))         params.enable_gvcf = false
 
 // ---------------------------------------------------------------------------

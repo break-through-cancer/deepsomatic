@@ -24,9 +24,9 @@
       },
       "num_streams_per_gpu": {
         "title": "Streams per GPU",
-        "description": "Number of streams to process per GPU (1-6). Higher values improve throughput but use more memory. Recommended: 3-4",
+        "description": "Number of streams to process per GPU (1-6). Higher values improve throughput but use more host memory (3 was OOM-killed at 60 GB on WGS). Default: 1",
         "type": "integer",
-        "default": 3,
+        "default": 1,
         "minimum": 1,
         "maximum": 6
       },
