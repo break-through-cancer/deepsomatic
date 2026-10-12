@@ -16,29 +16,51 @@ from cirro.helpers.preprocess_dataset import PreprocessDataset
 NORMAL_NAME_MARKERS = ["PBMC"]  # adjust if this cohort's normals aren't PBMC-labeled
 
 
+# (data extension, index extension), in order of preference: BAM first (the
+# original behaviour), then CRAM for datasets that only kept CRAMs.
+ALIGNMENT_FORMATS = [(".bam", ".bai"), (".cram", ".crai")]
+
+# Within one format, prefer recalibrated output, then the sorted/mapped
+# alignment, then markduplicates output, then anything else.
+NAME_PREFERENCE = [".recal.", ".sorted.", ".md."]
+
+
+def _rank(path):
+    name = path.rsplit("/", 1)[-1]
+    for i, marker in enumerate(NAME_PREFERENCE):
+        if marker in name:
+            return i
+    return len(NAME_PREFERENCE)
+
+
 def extract_bams(ds):
+    """Pick one alignment + matching index per sample (BAM, else CRAM).
+
+    The keys in the returned dict are still called "bam"/"bai" because the
+    workflow params (tumor_bam, tumor_bam_index, ...) use those names; the
+    values may be CRAM/CRAI paths, which Parabricks DeepSomatic also accepts.
+    """
     df = ds.files.copy()
     df["file"] = df["file"].astype(str)
-
-    df = df[df["file"].str.endswith(".bam") | df["file"].str.endswith(".bam.bai")]
 
     bam_map = {}
 
     for sample, group in df.groupby("sample"):
-        bam = ""
-        bai = ""
+        files = set(group["file"])
 
-        for f in group["file"]:
-            if f.endswith(".bam") and not f.endswith(".bam.bai"):
-                bam = f
-            elif f.endswith(".bam.bai"):
-                bai = f
-
-        if bam:
-            bam_map[str(sample)] = {"bam": bam, "bai": bai}
+        for data_ext, index_ext in ALIGNMENT_FORMATS:
+            # Only accept a data file whose own index sits next to it
+            pairs = [
+                f for f in files
+                if f.endswith(data_ext) and f + index_ext in files
+            ]
+            if pairs:
+                best = sorted(pairs, key=lambda f: (_rank(f), f))[0]
+                bam_map[str(sample)] = {"bam": best, "bai": best + index_ext}
+                break
 
     if not bam_map:
-        raise ValueError("No BAMs found in dataset")
+        raise ValueError("No BAM/CRAM files with a matching index found in dataset")
 
     return bam_map
 
@@ -82,7 +104,7 @@ def main():
             })
 
     if not tumor_runs:
-        raise ValueError("No tumor BAM found")
+        raise ValueError("No tumor BAM/CRAM found")
 
     if normal_bam is None:
         raise ValueError(
