@@ -41,7 +41,8 @@ process DEEPSOMATIC {
     path ref_fai
 
     output:
-    tuple val(sampleName), path("${sampleName}.vcf.gz"), path("${sampleName}.vcf.gz.tbi"), emit: vcf
+    tuple val(sampleName), path("${sampleName}.vcf.gz"), emit: vcf
+    path "${sampleName}.vcf.gz.tbi", optional: true, emit: tbi
     path "${sampleName}.log", emit: log
 
     shell:
@@ -58,9 +59,12 @@ process DEEPSOMATIC {
         !{params.enable_gvcf ? '--run-deepsomatic-gvcf' : ''} \
         > !{sampleName}.log 2>&1
 
-    # Verify output
+    # Verify output. pbrun may not write a .tbi, so index it if we can, but don't fail the
+    # task over a missing index (the VCF itself can take hours to produce).
     test -s !{sampleName}.vcf.gz
-    test -s !{sampleName}.vcf.gz.tbi
+    if [ ! -s !{sampleName}.vcf.gz.tbi ] && command -v tabix >/dev/null 2>&1; then
+        tabix -p vcf !{sampleName}.vcf.gz || true
+    fi
     '''
 }
 
@@ -100,7 +104,7 @@ workflow {
 
     // Collect VCFs
     vcf_files = DEEPSOMATIC.out.vcf
-        .map { sampleName, vcf, tbi -> vcf }
+        .map { sampleName, vcf -> vcf }
         .collect()
 
 }
