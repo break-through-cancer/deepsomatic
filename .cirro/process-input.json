@@ -1,4 +1,5 @@
 {
+  "outdir": "$.params.dataset.s3|/data/",
   "deepsomatic_runs": "$.dataset.params.deepsomatic_runs",
   "ref_fasta": "s3://broad-references/hg38/v0/Homo_sapiens_assembly38.fasta",
   "ref_fai": "s3://broad-references/hg38/v0/Homo_sapiens_assembly38.fasta.fai",
