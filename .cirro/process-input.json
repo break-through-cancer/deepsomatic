@@ -4,5 +4,6 @@
   "ref_fasta": "s3://broad-references/hg38/v0/Homo_sapiens_assembly38.fasta",
   "ref_fai": "s3://broad-references/hg38/v0/Homo_sapiens_assembly38.fasta.fai",
   "num_streams_per_gpu": "$.dataset.params.num_streams_per_gpu",
-  "enable_gvcf": "$.dataset.params.enable_gvcf"
+  "enable_gvcf": "$.dataset.params.enable_gvcf",
+  "interval_file": "$.dataset.params.interval_file"
 }

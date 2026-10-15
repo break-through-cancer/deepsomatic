@@ -35,9 +35,20 @@
         "description": "Generate gVCF output in addition to VCF",
         "type": "boolean",
         "default": false
+      },
+      "interval_file": {
+        "title": "Target intervals",
+        "description": "Optional BED file restricting DeepSomatic calling to these regions. Leave blank for genome-wide calling.",
+        "type": "string",
+        "multiple": false,
+        "pathType": "reference",
+        "file": "**/*"
       }
     },
-    "required": ["ref_fasta", "ref_fai"]
+    "required": [
+      "ref_fasta",
+      "ref_fai"
+    ]
   },
   "ui": {}
 }
