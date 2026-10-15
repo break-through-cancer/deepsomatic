@@ -32,6 +32,7 @@ Provide tumor-normal BAM (or CRAM, with `.crai` index) pairs via JSON config. Th
 
 - `num_streams_per_gpu`: Number of parallel streams per GPU (1-6). Default: 1 (higher values are faster but use more host memory)
 - `enable_gvcf`: Generate gVCF output. Default: false
+- `interval_file`: Optional BED file restricting calling to target regions (passed to `pbrun deepsomatic --interval-file`). Default: none (genome-wide)
 
 ## Cost Estimation
 
