@@ -31,7 +31,11 @@ process DEEPSOMATIC {
     tag "${sampleName}"
     label 'process_high'
     container "nvcr.io/nvidia/clara/clara-parabricks:4.6.0-1"
-    publishDir "${params.outdir}/${sampleName}", mode: 'copy'
+    // Published files carry the caller name (<sample>.deepsomatic.vcf.gz) so downstream
+    // tools such as consensus-calling can tell callers apart by filename. saveAs only
+    // changes the published copy; it is not part of the task cache key.
+    publishDir "${params.outdir}/${sampleName}", mode: 'copy',
+        saveAs: { fn -> fn.replace("${sampleName}.", "${sampleName}.deepsomatic.") }
     errorStrategy 'retry'
     maxRetries 2
 
