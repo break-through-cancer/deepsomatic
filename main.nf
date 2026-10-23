@@ -22,6 +22,10 @@ if (!params.containsKey('deepsomatic_runs'))    params.deepsomatic_runs = null
 // DeepSomatic-specific options
 if (!params.containsKey('num_streams_per_gpu')) params.num_streams_per_gpu = 1
 if (!params.containsKey('enable_gvcf'))         params.enable_gvcf = false
+if (!params.containsKey('interval_file'))       params.interval_file = null   // optional BED to restrict calling
+
+// Empty list stands in for "no file" so the optional path input stages nothing
+def NO_FILE = []
 
 // ---------------------------------------------------------------------------
 // PROCESSES
@@ -43,6 +47,7 @@ process DEEPSOMATIC {
     tuple val(sampleName), path(tumor_bam), path(tumor_bai), path(normal_bam), path(normal_bai)
     path ref_fasta
     path ref_fai
+    path interval_file
 
     output:
     tuple val(sampleName), path("${sampleName}.vcf.gz"), emit: vcf
@@ -53,6 +58,12 @@ process DEEPSOMATIC {
     '''
     set -euxo pipefail
 
+    # Optionally restrict calling to the regions in a BED file (genome-wide when unset)
+    interval_arg=""
+    if [ -n "!{interval_file}" ]; then
+        interval_arg="--interval-file !{interval_file}"
+    fi
+
     # Run DeepSomatic
     pbrun deepsomatic \
         --in-tumor-bam !{tumor_bam} \
@@ -61,6 +72,7 @@ process DEEPSOMATIC {
         --out-variants !{sampleName}.vcf.gz \
         --num-streams-per-gpu !{params.num_streams_per_gpu} \
         !{params.enable_gvcf ? '--run-deepsomatic-gvcf' : ''} \
+        ${interval_arg} \
         > !{sampleName}.log 2>&1
 
     # Verify output. pbrun may not write a .tbi, so index it if we can, but don't fail the
@@ -100,10 +112,13 @@ workflow {
             )
         }
 
+    interval_file = params.interval_file ? file(params.interval_file, checkIfExists: true) : NO_FILE
+
     DEEPSOMATIC(
         runs_ch,
         ref_fasta,
-        ref_fai
+        ref_fai,
+        interval_file
     )
 
     // Collect VCFs
